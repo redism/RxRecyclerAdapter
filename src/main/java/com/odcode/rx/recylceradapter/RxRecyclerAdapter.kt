@@ -23,7 +23,6 @@ class RxRecyclerAdapter<D : RxRecyclerAdapterData> constructor(
     override fun getItemViewType(position: Int): Int = delegate.getItemViewType(position, mDataSet[position])
 
     override fun accept(eventRecycler: RxRecyclerAdapterChangeEvent<D>) {
-        println(" RxAdapterChangeEvents : $eventRecycler")
         when (eventRecycler) {
             is RxRecyclerAdapterChangeEvent.Reloaded -> {
                 mDataSet.clear()
