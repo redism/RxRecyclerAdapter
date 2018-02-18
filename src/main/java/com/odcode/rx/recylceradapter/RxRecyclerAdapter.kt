@@ -48,7 +48,7 @@ class RxRecyclerAdapter<D : RxRecyclerAdapterData> constructor(
                 mDataSet.addAll(eventRecycler.index, eventRecycler.items)
                 notifyItemRangeInserted(eventRecycler.index, eventRecycler.items.count())
             }
-            is RxRecyclerAdapterChangeEvent.Replace -> {
+            is RxRecyclerAdapterChangeEvent.Changed -> {
                 mDataSet[eventRecycler.index] = eventRecycler.item
                 notifyItemChanged(eventRecycler.index)
             }
