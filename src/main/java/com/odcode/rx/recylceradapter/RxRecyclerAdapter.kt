@@ -1,0 +1,63 @@
+package com.odcode.rx.recylceradapter
+
+import android.support.v7.widget.RecyclerView
+import android.view.ViewGroup
+import io.reactivex.functions.Consumer
+
+class RxRecyclerAdapter<D : RxRecyclerAdapterData> constructor(
+        private val delegate: Delegate<D>
+) : RecyclerView.Adapter<RxRecyclerAdapterViewHolder<D>>(), Consumer<RxRecyclerAdapterChangeEvent<D>> {
+
+    private var mDataSet: MutableList<D> = mutableListOf()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RxRecyclerAdapterViewHolder<D>
+            = delegate.viewHolderForViewType(parent, viewType)
+
+    override fun onBindViewHolder(holderRecycler: RxRecyclerAdapterViewHolder<D>, position: Int) {
+        val item = mDataSet[position]
+        holderRecycler.onBindItem(item, position)
+    }
+
+    override fun getItemCount(): Int = mDataSet.count()
+
+    override fun getItemViewType(position: Int): Int = delegate.getItemViewType(position, mDataSet[position])
+
+    override fun accept(eventRecycler: RxRecyclerAdapterChangeEvent<D>) {
+        println(" RxAdapterChangeEvents : $eventRecycler")
+        when (eventRecycler) {
+            is RxRecyclerAdapterChangeEvent.Reloaded -> {
+                mDataSet.clear()
+                mDataSet.addAll(eventRecycler.newList)
+                notifyDataSetChanged()
+            }
+            is RxRecyclerAdapterChangeEvent.Removed -> {
+                mDataSet.removeAt(eventRecycler.index)
+                notifyItemRemoved(eventRecycler.index)
+            }
+            is RxRecyclerAdapterChangeEvent.RemovedRange -> {
+                for (i in (eventRecycler.itemCount - 1) downTo 0) {
+                    mDataSet.removeAt(i)
+                }
+                notifyItemRangeRemoved(eventRecycler.startIndex, eventRecycler.itemCount)
+            }
+            is RxRecyclerAdapterChangeEvent.Inserted -> {
+                mDataSet.add(eventRecycler.index, eventRecycler.item)
+                notifyItemInserted(eventRecycler.index)
+            }
+            is RxRecyclerAdapterChangeEvent.InsertedRange -> {
+                mDataSet.addAll(eventRecycler.index, eventRecycler.items)
+                notifyItemRangeInserted(eventRecycler.index, eventRecycler.items.count())
+            }
+            is RxRecyclerAdapterChangeEvent.Replace -> {
+                mDataSet[eventRecycler.index] = eventRecycler.item
+                notifyItemChanged(eventRecycler.index)
+            }
+        }
+    }
+
+    // FIXME: 임시
+    interface Delegate<D : RxRecyclerAdapterData> {
+        fun getItemViewType(position: Int, item: D): Int
+        fun viewHolderForViewType(parent: ViewGroup, viewType: Int): RxRecyclerAdapterViewHolder<D>
+    }
+}
