@@ -42,8 +42,6 @@ dependencies {
     api 'com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.0.0'
     api 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:2.0.0'
     api 'com.jakewharton.rxbinding2:rxbinding-design-kotlin:2.0.0'
-
-    kapt "com.android.databinding:compiler:$gradle_version"
 }
 
 repositories {
