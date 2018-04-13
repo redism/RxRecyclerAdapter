@@ -10,8 +10,7 @@ class RxRecyclerAdapter<D : RxRecyclerAdapterData> constructor(
 
     private var mDataSet: MutableList<D> = mutableListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RxRecyclerAdapterViewHolder<D>
-            = delegate.viewHolderForViewType(parent, viewType)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RxRecyclerAdapterViewHolder<D> = delegate.viewHolderForViewType(parent, viewType)
 
     override fun onBindViewHolder(holderRecycler: RxRecyclerAdapterViewHolder<D>, position: Int) {
         val item = mDataSet[position]
