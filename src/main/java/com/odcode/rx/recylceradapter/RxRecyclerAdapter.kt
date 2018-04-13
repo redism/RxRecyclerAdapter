@@ -34,7 +34,7 @@ class RxRecyclerAdapter<D : RxRecyclerAdapterData> constructor(
             }
             is RxRecyclerAdapterChangeEvent.RemovedRange -> {
                 for (i in (eventRecycler.itemCount - 1) downTo 0) {
-                    mDataSet.removeAt(i)
+                    mDataSet.removeAt(i + eventRecycler.startIndex)
                 }
                 notifyItemRangeRemoved(eventRecycler.startIndex, eventRecycler.itemCount)
             }
