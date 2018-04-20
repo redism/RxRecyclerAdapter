@@ -7,4 +7,5 @@ sealed class RxRecyclerAdapterChangeEvent<D : RxRecyclerAdapterData> {
     data class Inserted<D : RxRecyclerAdapterData>(val index: Int, val item: D) : RxRecyclerAdapterChangeEvent<D>()
     data class InsertedRange<D : RxRecyclerAdapterData>(val index: Int, val items: List<D>) : RxRecyclerAdapterChangeEvent<D>()
     data class Changed<D : RxRecyclerAdapterData>(val index: Int, val item: D) : RxRecyclerAdapterChangeEvent<D>()
+    data class ChangedRange<D : RxRecyclerAdapterData>(val index: Int, val items: List<D>) : RxRecyclerAdapterChangeEvent<D>()
 }

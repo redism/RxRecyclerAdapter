@@ -50,6 +50,12 @@ class RxRecyclerAdapter<D : RxRecyclerAdapterData> constructor(
                 mDataSet[eventRecycler.index] = eventRecycler.item
                 notifyItemChanged(eventRecycler.index)
             }
+            is RxRecyclerAdapterChangeEvent.ChangedRange -> {
+                for (i in 0 until eventRecycler.items.count()) {
+                    mDataSet[eventRecycler.index + i] = eventRecycler.items[i]
+                }
+                notifyItemRangeChanged(eventRecycler.index, eventRecycler.items.count())
+            }
         }
     }
 
